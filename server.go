@@ -9,7 +9,7 @@ import (
 )
 
 var (
-	mashupService    = service.NewMashupService(20)
+	mashupService    = service.NewMashupService(5)
 	mashupController = controller.NewMashupController(mashupService)
 	muxRouter        = router.NewMuxRouter()
 )
