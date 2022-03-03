@@ -6,8 +6,8 @@ import (
 	"net/http"
 )
 
-type CarDetailsService interface {
-	GetDetails() (*entity.CarDetails, error)
+type MashupService interface {
+	GetList() ([]entity.Mashup, error)
 }
 
 var (
@@ -15,17 +15,31 @@ var (
 	ownerService     = NewOwnerService()
 	carDatachannel   = make(chan *http.Response)
 	ownerDatachannel = make(chan *http.Response)
+	count            int
 )
 
 type service struct{}
 
-func NewCarDetailsService() CarDetailsService {
+func NewMashupService(cnt int) MashupService {
+	count = cnt
 	return &service{}
 }
 
-func (*service) GetDetails() (*entity.CarDetails, error) {
-	go carService.FetchData()
-	go ownerService.FetchData()
+func (*service) GetList() ([]entity.Mashup, error) {
+	var cars []entity.Mashup
+	for i := 1; i <= count; i++ {
+		car, err := GetMashup(i)
+		if err != nil {
+			return nil, err
+		}
+		cars = append(cars, *car)
+	}
+	return cars, nil
+}
+
+func GetMashup(id int) (*entity.Mashup, error) {
+	go carService.FetchData(id)
+	go ownerService.FetchData(id)
 	var carData, ownerData *http.Response
 
 	for i := 0; i < 2; i++ {
@@ -45,7 +59,7 @@ func (*service) GetDetails() (*entity.CarDetails, error) {
 		return nil, err
 	}
 
-	return &entity.CarDetails{
+	return &entity.Mashup{
 		ID:        car.ID,
 		Brand:     car.Brand,
 		Model:     car.Model,

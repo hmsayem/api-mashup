@@ -9,9 +9,9 @@ import (
 )
 
 var (
-	carDetailsService    = service.NewCarDetailsService()
-	carDetailsController = controller.NewCarDetailsController(carDetailsService)
-	muxRouter            = router.NewMuxRouter()
+	mashupService    = service.NewMashupService(20)
+	mashupController = controller.NewMashupController(mashupService)
+	muxRouter        = router.NewMuxRouter()
 )
 
 func main() {
@@ -19,6 +19,6 @@ func main() {
 	muxRouter.GET("/", func(w http.ResponseWriter, r *http.Request) {
 		log.Println("Server is up and running.")
 	})
-	muxRouter.GET("/cars", carDetailsController.GetCarDetails)
+	muxRouter.GET("/cars", mashupController.GetMashup)
 	muxRouter.SERVE(port)
 }

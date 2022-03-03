@@ -3,14 +3,15 @@ package service
 import (
 	"log"
 	"net/http"
+	"strconv"
 )
 
-const (
-	ownerServiceUrl = "https://myfakeapi.com/api/users/1"
+var (
+	ownerServiceUrl = "https://myfakeapi.com/api/users/"
 )
 
-type OnwerService interface {
-	FetchData()
+type OwnerService interface {
+	FetchData(id int)
 }
 
 type fetchOwnerDataService struct {
@@ -20,9 +21,9 @@ func NewOwnerService() CarService {
 	return &fetchOwnerDataService{}
 }
 
-func (*fetchOwnerDataService) FetchData() {
+func (*fetchOwnerDataService) FetchData(id int) {
 	client := http.Client{}
-	log.Printf("Fetching data from %s", ownerServiceUrl)
-	resp, _ := client.Get(ownerServiceUrl)
+	log.Printf("Fetching data from %s", ownerServiceUrl+strconv.Itoa(id))
+	resp, _ := client.Get(ownerServiceUrl + strconv.Itoa(id))
 	ownerDatachannel <- resp
 }

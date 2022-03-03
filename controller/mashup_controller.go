@@ -8,21 +8,21 @@ import (
 )
 
 var (
-	carDetailService service.CarDetailsService
+	mashupService service.MashupService
 )
 
-type CarDetailsController interface {
-	GetCarDetails(response http.ResponseWriter, request *http.Request)
+type MashupController interface {
+	GetMashup(response http.ResponseWriter, request *http.Request)
 }
 type controller struct{}
 
-func NewCarDetailsController(service service.CarDetailsService) CarDetailsController {
-	carDetailService = service
+func NewMashupController(service service.MashupService) MashupController {
+	mashupService = service
 	return &controller{}
 }
-func (*controller) GetCarDetails(writer http.ResponseWriter, request *http.Request) {
+func (*controller) GetMashup(writer http.ResponseWriter, request *http.Request) {
 	writer.Header().Set("Content-Type", "application/json")
-	result, err := carDetailService.GetDetails()
+	result, err := mashupService.GetList()
 	if err != nil {
 		log.Printf("failed to get car details: %v", err)
 		writer.WriteHeader(http.StatusInternalServerError)

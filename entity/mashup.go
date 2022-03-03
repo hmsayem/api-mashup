@@ -1,6 +1,6 @@
 package entity
 
-type CarDetails struct {
+type Mashup struct {
 	ID        int    `json:"id"`
 	Brand     string `json:"brand"`
 	Model     string `json:"model"`
