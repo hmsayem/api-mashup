@@ -17,15 +17,13 @@ var (
 	ownerDatachannel = make(chan *http.Response)
 )
 
-type service struct {
-}
+type service struct{}
 
 func NewCarDetailsService() CarDetailsService {
 	return &service{}
 }
 
 func (*service) GetDetails() (*entity.CarDetails, error) {
-
 	go carService.FetchData()
 	go ownerService.FetchData()
 	var carData, ownerData *http.Response

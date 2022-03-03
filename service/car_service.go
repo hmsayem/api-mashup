@@ -6,15 +6,14 @@ import (
 )
 
 const (
-	carServiceUrl = "https://myfakeapi.com/api/cars/1"
+	carServiceUrl = "https://myfakeapi.com/api/cars/"
 )
 
 type CarService interface {
 	FetchData()
 }
 
-type fetchCarDataService struct {
-}
+type fetchCarDataService struct{}
 
 func NewCarService() CarService {
 	return &fetchCarDataService{}
